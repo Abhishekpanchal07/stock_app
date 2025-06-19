@@ -1,5 +1,6 @@
+import 'package:beyond_stock_app/app_theme/app_theme.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
-import 'package:beyond_stock_app/screens/watchlist.dart';
+import 'package:beyond_stock_app/screens/add_stock.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,12 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: StringConstants.stockApp,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const WatchlistScreen(),
+      title: StringConstants.appName,
+      theme: AppTheme.darkTheme,
+      home: const AddStock(),
     );
   }
 }
