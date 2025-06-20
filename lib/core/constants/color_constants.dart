@@ -10,5 +10,6 @@ class ColorConstants {
   static const Color textColor = Colors.white;
   static const Color greyText = Colors.grey;
   static const Color whiteColor = Color(0xFFFFFFFF);
+   static const Color blackColor = Color(0xFF000000);
   static const Color accentColor = Color(0xFF00BFA6); // For FAB and similar accents
 }

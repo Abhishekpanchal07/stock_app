@@ -6,6 +6,9 @@ class StringConstants {
   static const searchStock = 'Search Stock';
   static const addToWatchList = 'Add to watchlist';
   static const cancel = 'Cancel';
+  static const fetchingResults = "Fetching results...";
+  static const noMatchingResultFound = "No matching stocks found.";
+  static const searchAndAddStocks = "Search and add Stock to your watchList";
   static const noInternetErrorMessage = "No Internet Connection";
   static const requestCancelledErrorMessage = "Request was cancelled"; 
   static const anUnExpectedErrorOccuredErrorMessage =
