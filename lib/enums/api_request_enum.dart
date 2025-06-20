@@ -1,0 +1,1 @@
+enum ApiRequestEmun {get,post,put,delete,patch}

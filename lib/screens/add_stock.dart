@@ -1,6 +1,8 @@
+import 'package:beyond_stock_app/core/constants/color_constants.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_app_bar.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_bottom_sheet.dart';
+import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_button.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -43,17 +45,30 @@ class AddStock extends StatelessWidget {
                         onTap: () {
                           showCustomBottomSheet(
                             context: context,
-                            title: 'Add to watchlist',
+                            title: StringConstants.addToWatchList,
                             description:
-                                'Following stock will be added to the watchlist.',
-                            content: 'HDFC Bank Large Cap Fund Direct Growth',
-                            onConfirm: () {
-                              // handle add
-                              Navigator.pop(context);
-                            },
-                            onCancel: () {
-                              Navigator.pop(context);
-                            },
+                                StringConstants.followingStockAddedText,
+                            content: 'HDFC Bank Large Cap Fund Direct Growth ',
+                            istButton: CustomButton(
+                              text: StringConstants.addToWatchList,
+                              onPressed: () {
+                                // handle add
+                                Navigator.pop(context);
+                              },
+                              buttonColor: Colors.white,
+                              textColor: Colors.black,
+                              borderColor: Colors.transparent,
+                            ),
+                            secondButton: CustomButton(
+                              text: StringConstants.cancel,
+                              /* onPressed: () {
+                                // handle add
+                                Navigator.pop(context);
+                              }, */
+                              buttonColor: ColorConstants.scaffoldBgColor,
+                              textColor: ColorConstants.whiteColor,
+                              borderColor: Colors.transparent,
+                            ),
                           );
                         },
                         child: Text(
