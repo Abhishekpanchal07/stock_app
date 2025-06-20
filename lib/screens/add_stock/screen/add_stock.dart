@@ -69,26 +69,8 @@ class AddStock extends StatelessWidget {
 
                             return GestureDetector(
                               onTap: () {
-                                showCustomBottomSheet(
-                                  context: context,
-                                  title: StringConstants.addToWatchList,
-                                  description:
-                                      StringConstants.followingStockAddedText,
-                                  content: item.name ?? 'Unknown Stock',
-                                  istButton: CustomButton(
-                                    text: StringConstants.addToWatchList,
-                                    onPressed: () => Navigator.pop(context),
-                                    buttonColor: ColorConstants.whiteColor,
-                                    textColor: ColorConstants.blackColor,
-                                    borderColor: Colors.transparent,
-                                  ),
-                                  secondButton: CustomButton(
-                                    text: StringConstants.cancel,
-                                    buttonColor: ColorConstants.scaffoldBgColor,
-                                    textColor: ColorConstants.whiteColor,
-                                    borderColor: Colors.transparent,
-                                  ),
-                                );
+                                _addStockBottomSheet(
+                                    context: context, content: item.name);
                               },
                               child: Container(
                                 padding:
@@ -121,76 +103,28 @@ class AddStock extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
 
-        /* body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-          child: Column(
-            children: [
-              // Search Bar
-              Consumer<SearchStockViewmodel>(
-                builder: (context, viewModel, child) {
-                  return CustomSearchBar(
-                    onChanged: viewModel.onSearchTextChanged,
-                  );
-                },
-              ),
-
-              SizedBox(height: 16),
-              // List
-              Expanded(
-                child: ListView.separated(
-                  itemCount: stockList.length,
-                  separatorBuilder: (_, __) => Divider(color: Colors.white24),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          showCustomBottomSheet(
-                            context: context,
-                            title: StringConstants.addToWatchList,
-                            description:
-                                StringConstants.followingStockAddedText,
-                            content: 'HDFC Bank Large Cap Fund Direct Growth ',
-                            istButton: CustomButton(
-                              text: StringConstants.addToWatchList,
-                              onPressed: () {
-                                // handle add
-                                Navigator.pop(context);
-                              },
-                              buttonColor: Colors.white,
-                              textColor: Colors.black,
-                              borderColor: Colors.transparent,
-                            ),
-                            secondButton: CustomButton(
-                              text: StringConstants.cancel,
-                              /* onPressed: () {
-                                // handle add
-                                Navigator.pop(context);
-                              }, */
-                              buttonColor: ColorConstants.scaffoldBgColor,
-                              textColor: ColorConstants.whiteColor,
-                              borderColor: Colors.transparent,
-                            ),
-                          );
-                        },
-                        child: Text(
-                          stockList[index],
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          maxLines: 2,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ), */
+  void _addStockBottomSheet({required BuildContext context, String? content}) {
+    showCustomBottomSheet(
+      context: context,
+      title: StringConstants.addToWatchList,
+      description: StringConstants.followingStockAddedText,
+      content: content ?? 'Unknown Stock',
+      istButton: CustomButton(
+        text: StringConstants.addToWatchList,
+        onPressed: () => Navigator.pop(context),
+        buttonColor: ColorConstants.whiteColor,
+        textColor: ColorConstants.blackColor,
+        borderColor: Colors.transparent,
+      ),
+      secondButton: CustomButton(
+        text: StringConstants.cancel,
+        buttonColor: ColorConstants.scaffoldBgColor,
+        textColor: ColorConstants.whiteColor,
+        borderColor: Colors.transparent,
       ),
     );
   }

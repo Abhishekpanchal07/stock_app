@@ -7,9 +7,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final double? fontSize;
   final FontWeight? fontWeight;
+  final Color? backgroundColor;
 
   const CustomAppBar(
-      {super.key, required this.title, this.fontSize, this.fontWeight});
+      {super.key, required this.title, this.fontSize, this.fontWeight, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         height: preferredSize.height,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
-          color: ColorConstants.scaffoldBgColor, // Use your scaffold color
+          color: backgroundColor ?? ColorConstants.scaffoldBgColor, // Use your scaffold color
         ),
         child: Row(
           children: [
