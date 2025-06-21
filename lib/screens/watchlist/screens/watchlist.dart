@@ -1,5 +1,6 @@
 import 'package:beyond_stock_app/core/constants/color_constants.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
+import 'package:beyond_stock_app/screens/add_stock/add_stock.dart';
 import 'package:beyond_stock_app/screens/watchlist/widget/stock_filter_buttons.dart';
 import 'package:beyond_stock_app/screens/watchlist/widget/stock_list_view.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_app_bar.dart';
@@ -24,7 +25,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
         fontWeight: FontWeight.w600,
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
             color: ColorConstants.scaffoldBgColor,
             borderRadius: BorderRadius.circular(25)),
@@ -39,34 +40,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorConstants.addButtonColor,
-        shape: CircleBorder(),
-        onPressed: () {},
-        child: const Icon(Icons.add, color: ColorConstants.blackColor),
-      ),
+      floatingActionButton: _addButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF1C1C1E),
-        selectedItemColor: const Color(0xFF00D09C),
-        unselectedItemColor: Colors.white,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.stacked_line_chart),
-            label: 'Stocks',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '',
-          ),
-        ],
-        currentIndex: 0,
-        onTap: (index) {},
-      ),
+    );
+  }
+
+  FloatingActionButton _addButton() {
+    return FloatingActionButton(
+      backgroundColor: ColorConstants.addButtonColor,
+      shape: CircleBorder(),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => AddStock()));
+      },
+      child: const Icon(Icons.add, color: ColorConstants.blackColor),
     );
   }
 }

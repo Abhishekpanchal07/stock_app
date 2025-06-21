@@ -1,6 +1,8 @@
 class StringConstants {
   static const appName = "Stock App";
   static const watchList1 = "watchList 1";
+  static const noteScreen = "Note Screen";
+  static const ideaScreen = "Idea Screen";
   static const sort = "Sort";
   static const dayChange = "Day Change (%)";
   static const addStock = "Add Stock";
@@ -15,7 +17,10 @@ class StringConstants {
   static const noInternetErrorMessage = "No Internet Connection";
   static const requestCancelledErrorMessage = "Request was cancelled";
   static const deleteFromwatchList = "Delete from watchlist";
-  static const followingStockDeleteText = "Following stock will be deleted from the watchlist. You can add it again anytime.";
+  static const fetchingWatchlist = "Fetching your watchlist stocks...";
+  static const noWatchlistFound = "No stocks added in your watchlist yet.";
+  static const followingStockDeleteText =
+      "Following stock will be deleted from the watchlist. You can add it again anytime.";
   static const anUnExpectedErrorOccuredErrorMessage =
       "An unexpected error occurred";
   static const followingStockAddedText =

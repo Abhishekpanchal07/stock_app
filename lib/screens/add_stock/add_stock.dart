@@ -1,23 +1,46 @@
 import 'package:beyond_stock_app/core/constants/color_constants.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
+import 'package:beyond_stock_app/modals/search_result_model.dart';
 import 'package:beyond_stock_app/view_model/search_stock_viewmodel.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_app_bar.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_bottom_sheet.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_button.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_loader.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_search_bar.dart';
+import 'package:beyond_stock_app/widgets/common_helper_widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddStock extends StatelessWidget {
+class AddStock extends StatefulWidget {
   const AddStock({super.key});
+
+  @override
+  State<AddStock> createState() => _AddStockState();
+}
+
+class _AddStockState extends State<AddStock> {
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _searchController.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: ColorConstants.blackColor,
         appBar: CustomAppBar(
+          backgroundColor: ColorConstants.blackColor,
           title: StringConstants.addStock,
           fontSize: 16,
           fontWeight: FontWeight.w600,
@@ -30,6 +53,7 @@ class AddStock extends StatelessWidget {
               Consumer<SearchStockViewmodel>(
                 builder: (context, viewModel, child) {
                   return CustomSearchBar(
+                    controller: _searchController,
                     onChanged: viewModel.onSearchTextChanged,
                   );
                 },
@@ -70,7 +94,7 @@ class AddStock extends StatelessWidget {
                             return GestureDetector(
                               onTap: () {
                                 _addStockBottomSheet(
-                                    context: context, content: item.name);
+                                    context: context, stock: item);
                               },
                               child: Container(
                                 padding:
@@ -89,7 +113,7 @@ class AddStock extends StatelessWidget {
                           },
                           separatorBuilder: (_, __) => SizedBox(
                             child: const Divider(
-                              color: ColorConstants.whiteColor,
+                              color: ColorConstants.scaffoldBgColor,
                               thickness: 1,
                               height: 1,
                             ),
@@ -107,15 +131,31 @@ class AddStock extends StatelessWidget {
     );
   }
 
-  void _addStockBottomSheet({required BuildContext context, String? content}) {
+  void _addStockBottomSheet(
+      {required BuildContext context, SearchResultModel? stock}) {
     showCustomBottomSheet(
       context: context,
       title: StringConstants.addToWatchList,
       description: StringConstants.followingStockAddedText,
-      content: content ?? 'Unknown Stock',
+      content: stock?.name ?? 'Unknown Stock',
       istButton: CustomButton(
         text: StringConstants.addToWatchList,
-        onPressed: () => Navigator.pop(context),
+        onPressed: () async {
+          final viewModel = context.read<SearchStockViewmodel>();
+          final msg =
+              await viewModel.addToWatchlist(stock ?? SearchResultModel());
+
+          if (context.mounted) {
+            Navigator.pop(context); 
+
+            showInformativeMessage(message: msg,backgroundColor: ColorConstants.addButtonColor,textColor: ColorConstants.whiteColor);
+           /*  ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(msg))); */
+
+            viewModel.clearSearch(); // clears list & viewmodel text
+            _searchController.clear(); // clears UI text
+          }
+        },
         buttonColor: ColorConstants.whiteColor,
         textColor: ColorConstants.blackColor,
         borderColor: Colors.transparent,

@@ -8,9 +8,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final Color? backgroundColor;
+  final bool? showLeadingIcon;
 
   const CustomAppBar(
-      {super.key, required this.title, this.fontSize, this.fontWeight, this.backgroundColor});
+      {super.key,
+      required this.title,
+      this.fontSize,
+      this.fontWeight,
+      this.backgroundColor,
+      this.showLeadingIcon = true});
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +25,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         height: preferredSize.height,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
-          color: backgroundColor ?? ColorConstants.scaffoldBgColor, // Use your scaffold color
+          color: backgroundColor ??
+              ColorConstants.scaffoldBgColor, // Use your scaffold color
         ),
         child: Row(
           children: [
             GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                height: 48,
-                width: 48,
-                padding: const EdgeInsets.all(12), // centers the icon (24x24)
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1F1F1F), // Adjust as per your design
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: SvgPicture.asset(
-                  SvgImageConstants.backIcon,
-                  height: 24,
-                  width: 24,
-                  color: Colors.white,
+              onTap: () {
+                if (Navigator.canPop(context)) Navigator.pop(context);
+              },
+              child: Visibility(
+                visible: showLeadingIcon ?? true,
+                child: Container(
+                  height: 48,
+                  width: 48,
+                  padding: const EdgeInsets.all(12), // centers the icon (24x24)
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F1F1F), // Adjust as per your design
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: SvgPicture.asset(
+                    SvgImageConstants.backIcon,
+                    height: 24,
+                    width: 24,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
