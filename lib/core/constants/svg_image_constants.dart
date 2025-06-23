@@ -7,4 +7,9 @@ class SvgImageConstants {
       "assets/images/svg/bottom_nav_stock_icon.svg";
   static const bottomNavNoteIcon = "assets/images/svg/bottom_nav_note_icon.svg";
   static const bottomNavIdeaIcon = "assets/images/svg/bottom_nav_idea_icon.svg";
+  static const highRiskIcon = "assets/images/svg/high_risk_icon.svg";
+  static const suitsCurrentMarketIcon =
+      "assets/images/svg/suits_current_market_icon.svg";
+      static const dropDownIcon =
+      "assets/images/svg/dropdown_icon.svg";
 }

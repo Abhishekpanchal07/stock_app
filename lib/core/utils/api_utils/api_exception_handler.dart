@@ -84,10 +84,11 @@ class NetworkException extends ApiExceptionHandler {
 
   static Widget _buildShowErrorMessage({required String errorMessage}) {
     return showInformativeMessage(
-        bottomMargin: 20.0,
+       // bottomMargin: 20.0,
         message: errorMessage,
-        fontSize: 14,
-        backgroundColor: ColorConstants.crimsonRed,
-        textColor: ColorConstants.whiteColor);
+        // fontSize: 14,
+        // backgroundColor: ColorConstants.crimsonRed,
+        // textColor: ColorConstants.whiteColor
+        );
   }
 }

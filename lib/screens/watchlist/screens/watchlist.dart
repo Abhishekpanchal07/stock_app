@@ -1,10 +1,11 @@
 import 'package:beyond_stock_app/core/constants/color_constants.dart';
+import 'package:beyond_stock_app/core/constants/route_constants.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
-import 'package:beyond_stock_app/screens/add_stock/add_stock.dart';
 import 'package:beyond_stock_app/screens/watchlist/widget/stock_filter_buttons.dart';
 import 'package:beyond_stock_app/screens/watchlist/widget/stock_list_view.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
@@ -50,7 +51,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       backgroundColor: ColorConstants.addButtonColor,
       shape: CircleBorder(),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => AddStock()));
+        context.pushNamed(RouteConstants.addStockScreen);
       },
       child: const Icon(Icons.add, color: ColorConstants.blackColor),
     );

@@ -1,15 +1,19 @@
 // stock_tile.dart
+import 'package:beyond_stock_app/core/constants/parameter_key_constants.dart';
+import 'package:beyond_stock_app/core/constants/route_constants.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
 import 'package:beyond_stock_app/modals/search_result_model.dart';
 import 'package:beyond_stock_app/view_model/search_stock_viewmodel.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_bottom_sheet.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_button.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_loader.dart';
+import 'package:beyond_stock_app/widgets/common_helper_widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:beyond_stock_app/core/constants/color_constants.dart';
 import 'package:beyond_stock_app/core/constants/svg_image_constants.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/svg_image.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class StockListView extends StatefulWidget {
@@ -67,75 +71,84 @@ class _StockListViewState extends State<StockListView> {
   }
 
   Widget _buildStockTile(BuildContext context, SearchResultModel stock) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(0),
-      clipBehavior: Clip.hardEdge,
-      child: Slidable(
-        key: ValueKey(stock.name),
-        endActionPane: ActionPane(
-          motion: const DrawerMotion(),
-          extentRatio: 0.2,
-          children: [
-            CustomSlidableAction(
-              onPressed: (_) {
-                _deleteStockBottomSheet(context: context, stock: stock);
-              },
-              backgroundColor: Colors.transparent,
-              autoClose: true,
-              padding: EdgeInsets.zero,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.red.withAlpha(30),
-                  shape: BoxShape.circle,
-                ),
-                padding: const EdgeInsets.all(10),
-                child: SvgImage(
-                  imagePath: SvgImageConstants.deleteIcon,
-                  height: 20,
-                  width: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-        child: Container(
-          color: Colors.transparent,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () {
+        context.pushNamed(RouteConstants.stockDetailScreen, extra: {
+          ParameterKeyConstants.stockName: stock.name,
+          ParameterKeyConstants.stockSymbol: stock.symbol
+        });
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(0),
+        clipBehavior: Clip.hardEdge,
+        child: Slidable(
+          key: ValueKey(stock.name),
+          endActionPane: ActionPane(
+            motion: const DrawerMotion(),
+            extentRatio: 0.2,
             children: [
-              Expanded(
-                child: Text(
-                  stock.name ?? "Stock Name Not Found",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    height: 1.4,
+              CustomSlidableAction(
+                onPressed: (_) {
+                  _deleteStockBottomSheet(context: context, stock: stock);
+                },
+                backgroundColor: Colors.transparent,
+                autoClose: true,
+                padding: EdgeInsets.zero,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: ColorConstants.blackColor,
+                    // shape: BoxShape.circle,
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  child: SvgImage(
+                    imagePath: SvgImageConstants.deleteIcon,
+                    height: 20,
+                    width: 20,
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    convertUsdToInr(stock.close),
-                    style: TextStyle(
-                      color: _getPriceColor(stock.close),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "(${formatPercent(stock.percentChange)})",
-                    style: TextStyle(
-                      color: _getPercentColor(stock.percentChange),
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
               ),
             ],
+          ),
+          child: Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    stock.name ?? "Stock Name Not Found",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      convertUsdToInr(stock.close),
+                      style: TextStyle(
+                        color: _getPriceColor(stock.close),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "(${formatPercent(stock.percentChange)})",
+                      style: TextStyle(
+                        color: _getPercentColor(stock.percentChange),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -190,10 +203,10 @@ class _StockListViewState extends State<StockListView> {
           }
 
           Navigator.pop(context); // Close bottom sheet
-
-          ScaffoldMessenger.of(context).showSnackBar(
+showInformativeMessage(message:"Stock removed from your watchlist." );
+        /*   ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Stock removed from your watchlist.")),
-          );
+          ); */
         },
         buttonColor: ColorConstants.blackColor,
         textColor: ColorConstants.deleteStockColor,
