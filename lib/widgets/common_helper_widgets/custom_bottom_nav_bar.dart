@@ -1,3 +1,4 @@
+import 'package:beyond_stock_app/core/constants/string_constants.dart';
 import 'package:beyond_stock_app/core/constants/svg_image_constants.dart';
 import 'package:beyond_stock_app/modals/bottom_nav_item_model.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_bottom_nav_item.dart';
@@ -11,15 +12,15 @@ class CustomBottomNavBar extends StatelessWidget {
     final List<BottomNavItemModel> items = [
       BottomNavItemModel(
         icon: SvgImageConstants.bottomNavStockIcon,
-        label: 'Stocks',
+        label: StringConstants.stocks,
       ),
       BottomNavItemModel(
         icon: SvgImageConstants.bottomNavNoteIcon,
-        label: 'Notes',
+        label: StringConstants.notes,
       ),
       BottomNavItemModel(
         icon: SvgImageConstants.bottomNavIdeaIcon,
-        label: 'Ideas',
+        label: StringConstants.ideas,
       ),
     ];
 

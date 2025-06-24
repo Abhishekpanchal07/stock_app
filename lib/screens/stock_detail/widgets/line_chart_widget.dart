@@ -39,14 +39,11 @@ class LineChartWidget extends StatelessWidget {
               final percentChange = viewModel.stockReturnPercent;
 
               if (stockSpots.isEmpty) {
-                return const SizedBox(
+                return SizedBox(
                   height: 485,
                   child: Center(
-                    child: CustomLoader(
-                      message: StringConstants.noDataAvailable,
-                      loaderColor: ColorConstants.red,
-                      textColor: ColorConstants.whiteColor,
-                    ),
+                    child: Text(StringConstants.noDataAvailable,
+                        style: Theme.of(context).textTheme.bodySmall),
                   ),
                 );
               }
@@ -244,6 +241,29 @@ class _LineChartContent extends StatelessWidget {
         padding: const EdgeInsets.only(right: 16, left: 4),
         child: LineChart(
           LineChartData(
+            lineTouchData: LineTouchData(
+              handleBuiltInTouches: true,
+              touchTooltipData: LineTouchTooltipData(
+                // tooltipBgColor: Colors.black87,
+                getTooltipItems: (touchedSpots) {
+                  return touchedSpots.map((LineBarSpot touchedSpot) {
+                    final textColor =
+                        touchedSpot.bar.color == ColorConstants.crimsonRed
+                            ? ColorConstants.red
+                            : ColorConstants.addButtonColor;
+
+                    return LineTooltipItem(
+                      "₹${touchedSpot.y.toStringAsFixed(2)}",
+                      TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                      ),
+                    );
+                  }).toList();
+                },
+              ),
+            ),
             minX: 0,
             maxX: stockSpots.length - 1.toDouble(),
             minY: minY,
@@ -254,7 +274,7 @@ class _LineChartContent extends StatelessWidget {
               drawHorizontalLine: true,
               drawVerticalLine: false,
               getDrawingHorizontalLine: (value) => FlLine(
-                color: Colors.grey.withOpacity(0.5),
+                color: ColorConstants.greyText,
                 strokeWidth: 0.5,
               ),
               horizontalInterval: intervalY,
@@ -262,7 +282,7 @@ class _LineChartContent extends StatelessWidget {
             extraLinesData: ExtraLinesData(horizontalLines: [
               HorizontalLine(
                 y: maxY,
-                color: Colors.grey.withOpacity(0.5),
+                color: ColorConstants.greyText,
                 strokeWidth: 0.5,
               )
             ]),
@@ -318,7 +338,7 @@ class _LineChartContent extends StatelessWidget {
               LineChartBarData(
                 isCurved: true,
                 spots: benchmarkSpots,
-                color: Colors.redAccent.withOpacity(0.7),
+                color: ColorConstants.crimsonRed,
                 barWidth: 2,
                 isStrokeCapRound: true,
                 belowBarData: BarAreaData(show: false),
@@ -370,23 +390,33 @@ class _LineChartContent extends StatelessWidget {
         return '${DateFormat('MMM dd').format(weekStart)} - ${DateFormat('dd').format(weekEnd)}';
 
       case '3M':
-        // 3 distinct months (MMM) - current month and last 2 months
-        return DateFormat('MMM').format(date);
-
       case '6M':
-        // 6 distinct months (MMM) - current month and last 5 months
-        return DateFormat('MMM').format(date);
+        {
+          final currentMonth = date.month;
+          final previousDate = index > 0 ? filteredDates[index - 1] : null;
+          final previousMonth = previousDate?.month;
+          if (currentMonth != previousMonth) {
+            return DateFormat('MMM').format(date);
+          } else {
+            return '';
+          }
+        }
 
       case '1Y':
-        // 2 points: June 2024, June 2025
-        return DateFormat('MMM yyyy').format(date);
-
       case '5Y':
-        // 6 yearly points (MMM yyyy)
-        return DateFormat('MMM yyyy').format(date);
-
       case 'MAX':
-        return DateFormat('MMM yyyy').format(date);
+        {
+          final currentLabel = DateFormat('MMM yyyy').format(date);
+          final previousDate = index > 0 ? filteredDates[index - 1] : null;
+          final previousLabel = previousDate != null
+              ? DateFormat('MMM yyyy').format(previousDate)
+              : null;
+          if (currentLabel != previousLabel) {
+            return currentLabel;
+          } else {
+            return '';
+          }
+        }
 
       default:
         return DateFormat('MMM dd').format(date);

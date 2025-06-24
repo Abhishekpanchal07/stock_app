@@ -201,10 +201,14 @@ class _StockListViewState extends State<StockListView> {
           if (stock?.symbol != null) {
             await viewModel.removeFromWatchlist(stock?.symbol ?? "");
           }
+          if (context.mounted) {
+            Navigator.pop(context); // Close bottom sheet
+            showInformativeMessage(
+                message: StringConstants.stockRemovedText,
+                backgroundColor: ColorConstants.emeraldGreen);
+          } else {}
 
-          Navigator.pop(context); // Close bottom sheet
-showInformativeMessage(message:"Stock removed from your watchlist." );
-        /*   ScaffoldMessenger.of(context).showSnackBar(
+          /*   ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Stock removed from your watchlist.")),
           ); */
         },

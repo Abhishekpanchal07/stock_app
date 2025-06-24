@@ -102,6 +102,28 @@ class YearlyReturnsChart extends StatelessWidget {
       margin: const EdgeInsets.only(left: 20, right: 25, top: 24),
       child: BarChart(
         BarChartData(
+          barTouchData: BarTouchData(
+            enabled: true,
+            touchTooltipData: BarTouchTooltipData(
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                final value = rod.toY.toStringAsFixed(2); // ✨ 2 decimal places
+                final label = rodIndex == 0 ? '₹$value' : '₹$value';
+                final isStock = rodIndex == 0;
+
+                final tooltipColor = isStock
+                    ? ColorConstants.addButtonColor
+                    : ColorConstants.greyText;
+
+                return BarTooltipItem(
+                  label,
+                  TextStyle(
+                    color: tooltipColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                );
+              },
+            ),
+          ),
           maxY: metrics.maxY,
           minY: metrics.minY,
           barGroups: years.map((year) {
@@ -112,13 +134,13 @@ class YearlyReturnsChart extends StatelessWidget {
               barRods: [
                 BarChartRodData(
                   toY: stockReturns[year] ?? 0,
-                  color: Colors.cyanAccent,
+                  color: ColorConstants.addButtonColor,
                   width: 8,
                   borderRadius: BorderRadius.zero,
                 ),
                 BarChartRodData(
                   toY: benchmarkReturns[year] ?? 0,
-                  color: Colors.grey[700],
+                  color: ColorConstants.greyText,
                   width: 8,
                   borderRadius: BorderRadius.zero,
                 ),
@@ -132,10 +154,40 @@ class YearlyReturnsChart extends StatelessWidget {
                 showTitles: true,
                 getTitlesWidget: (value, _) {
                   int index = value.toInt();
-                  return (index >= 0 && index < years.length)
-                      ? Text(years[index].toString(),
-                          style: const TextStyle(color: Colors.grey))
-                      : const SizedBox.shrink();
+                  if (index >= 0 && index < years.length) {
+                    final year = years[index];
+                    final stock = stockReturns[year] ?? 0;
+                    final benchmark = benchmarkReturns[year] ?? 0;
+
+                    Color? indicatorColor;
+                    if (stock > benchmark) {
+                      indicatorColor = ColorConstants.addButtonColor;
+                    } else if (benchmark > stock) {
+                      indicatorColor = ColorConstants.greyText;
+                    }
+
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          year.toString(),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: 12,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: indicatorColor,
+                            borderRadius: BorderRadius.circular(1),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
                 },
               ),
             ),
@@ -170,9 +222,8 @@ class YearlyReturnsChart extends StatelessWidget {
             horizontalLines: [
               HorizontalLine(
                 y: metrics.maxY,
-                color: Colors.grey.withOpacity(0.2),
+                color: ColorConstants.greyText,
                 strokeWidth: 1,
-                dashArray: [5, 2], // Optional: make it dashed to differentiate
               ),
             ],
           ),
@@ -186,9 +237,10 @@ class YearlyReturnsChart extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
-        LegendItem(color: Colors.cyanAccent, text: "Short Term Trend Catcher"),
+        LegendItem(
+            color: Colors.cyanAccent, text: StringConstants.shortTermCatcher),
         SizedBox(width: 16),
-        LegendItem(color: Colors.grey, text: "Benchmark"),
+        LegendItem(color: Colors.grey, text: StringConstants.benchmark),
       ],
     );
   }

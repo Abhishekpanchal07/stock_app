@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +21,31 @@ class StockDetailViewmodel extends ChangeNotifier {
     _selectedRange = range;
   }
 
-  static const double usdToInrRate = 83.0;
+  static const double usdToInrRate = 83.0;  
+
+   
+
+  Map<String, List<double>> getEventPerformanceReturns() {
+    return {
+      'stock': [12000, 8000, 9000],
+      'benchmark': [10000, 8500, 9200],
+      'peer': [11000, 7800, 8900],
+    };
+  }
+
+  // Getters
+double? get minInvestmentAmount => 
+    getMinimumInvestmentAmount(stockDetail?.values) != null
+        ? getMinimumInvestmentAmount(stockDetail?.values)! * usdToInrRate
+        : null;
+
+double? get twoYearCAGR =>
+    calculateTwoYearCAGR(stockDetail?.values);
+
+// Optional UI formatted gettersa
+String get formattedMinInvestmentAmount => formatCurrency(minInvestmentAmount);
+String get formattedTwoYearCAGR => formatCAGR(twoYearCAGR);
+
 
   void updateSelectedRange(String range) {
     if (_selectedRange != range) {
@@ -36,7 +60,7 @@ class StockDetailViewmodel extends ChangeNotifier {
       stockDetail =
           await timeSeriesApiService.fetchStockDetail(stockSymbol: stockSymbol);
     } catch (e) {
-      log("Error fetching stock: $e");
+      debugPrint("Error fetching stock: $e");
     } finally {
       _setLoading(false);
     }
@@ -47,7 +71,7 @@ class StockDetailViewmodel extends ChangeNotifier {
     try {
       benchmark = await timeSeriesApiService.fetchBenchmarkDetail();
     } catch (e) {
-      log("Error fetching benchmark: $e");
+      debugPrint("Error fetching benchmark: $e");
     } finally {
       _setLoading(false);
     }
@@ -77,21 +101,6 @@ class StockDetailViewmodel extends ChangeNotifier {
     final last = spots.lastWhere((s) => s.y > 0, orElse: () => spots.last);
     return ((last.y - first.y) / first.y) * 100;
   }
-
-  /// ==== Helpers ====
-  /*  List<dynamic> _filterValues(List<dynamic> allValues) {
-    switch (_selectedRange) {
-      case '1W': return _getLastNDays(allValues, 7);
-      case '3W': return _getWeeklyData(allValues, 3);
-      case '1M': return _getWeeklyData(allValues, 4);
-      case '3M':
-      case '6M': return _getMonthlyData(allValues, 6);
-      case '1Y': return _getYearlyData(allValues, 2, 1);
-      case '5Y': return _getYearlyData(allValues, 2, 5);
-      case 'MAX': return _getMaxRangeData(allValues);
-      default: return _getMonthlyData(allValues, 6);
-    }
-  } */
 
   // Updated _filterValues method in StockDetailViewmodel
   List<dynamic> _filterValues(List<dynamic> allValues) {
@@ -154,7 +163,7 @@ class StockDetailViewmodel extends ChangeNotifier {
       targetMonths.add(DateTime(now.year, now.month - i, 1));
     }
 
-    // Reverse to get chronological order (oldest to newest)
+    // Reverse to get chronodebugPrintical order (oldest to newest)
     targetMonths.sort((a, b) => a.compareTo(b));
 
     for (final targetMonth in targetMonths) {
@@ -300,7 +309,6 @@ class StockDetailViewmodel extends ChangeNotifier {
         .toList();
   }
 
-
   List<dynamic> _getMaxRangeData(List<dynamic> values) {
     final sorted = [
       ...values
@@ -308,8 +316,6 @@ class StockDetailViewmodel extends ChangeNotifier {
     if (sorted.length >= 2) return [sorted.first, sorted.last];
     return sorted;
   }
-
-
 
   DateTime _parseDate(String? dateStr) {
     return DateTime.tryParse(dateStr ?? '') ?? DateTime.now();
@@ -396,5 +402,83 @@ class StockDetailViewmodel extends ChangeNotifier {
       default:
         return DateFormat('MMM dd').format(date);
     }
+  } 
+
+  double? getMinimumInvestmentAmount(List<dynamic>? values) {
+  if (values == null || values.isEmpty) return null;
+
+  final minClose = values
+      .map((v) => double.tryParse(v.close ?? '') ?? double.infinity)
+      .reduce((a, b) => a < b ? a : b);
+
+  return minClose;
+} 
+String formatCurrency(double? value) {
+  if (value == null) return "-";
+  return "₹${value.toStringAsFixed(0)}";
+}
+
+
+double? calculateTwoYearCAGR(List<dynamic>? values) {
+  if (values == null || values.length < 2) return null;
+
+  final twoYearsAgo = DateTime.now().subtract(Duration(days: 730));
+  dynamic initial;
+  dynamic latest;
+
+  // Ensure chronodebugPrintical order
+  final sorted = [...values]..sort((a, b) =>
+      DateTime.parse(a.datetime!).compareTo(DateTime.parse(b.datetime!)));
+
+  for (var val in sorted) {
+    final date = DateTime.tryParse(val.datetime ?? '');
+    if (date == null) continue;
+    if (date.isBefore(twoYearsAgo)) {
+      initial = val;
+    }
+    latest = val; // last non-null entry
   }
+
+  if (initial == null || latest == null) return null;
+
+  final initialValue = double.tryParse(initial.close ?? '');
+  final finalValue = double.tryParse(latest.close ?? '');
+
+  if (initialValue == null || finalValue == null || initialValue == 0) {
+    return null;
+  }
+
+  final cagr = pow(finalValue / initialValue, 1 / 2) - 1;
+  return cagr * 100;
+}
+
+String formatCAGR(double? value) {
+  if (value == null) return "-";
+  return "${value.toStringAsFixed(2)}%";
+}
+
+ // In StockDetailViewmodel
+List<String> get eventLabels => ['2008 Crisis', 'COVID-19', 'Financial Crisis'];
+
+Map<String, double> getEventPerformanceStockReturns() {
+  // Replace with your actual calculation logic
+  // This should return dynamic values based on stock performance during these events
+  return {
+    '2008 Crisis': 21200,
+    'COVID-19': 29900,
+    'Financial Crisis': 26900,
+  };
+}
+
+Map<String, double> getEventPerformanceBenchmarkReturns() {
+  // Replace with your actual calculation logic
+  // This should return dynamic values based on benchmark performance during these events
+  return {
+    '2008 Crisis': 23900,
+    'COVID-19': 30000,
+    'Financial Crisis': 23000,
+  };
+}
+
+ 
 }

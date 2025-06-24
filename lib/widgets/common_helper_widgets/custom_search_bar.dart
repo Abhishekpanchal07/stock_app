@@ -4,38 +4,6 @@ import 'package:beyond_stock_app/view_model/search_stock_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/* class CustomSearchBar extends StatelessWidget {
-  final ValueChanged<String> onChanged;
-
-  const CustomSearchBar({super.key, required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.all(color: Colors.white24),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: TextField(
-        cursorColor: ColorConstants.searchStockColor,
-        style: const TextStyle(color: Colors.white),
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          hintText: StringConstants.searchStock,
-          hintStyle: TextStyle(
-            color: ColorConstants.searchStockColor,
-            fontSize: 14,
-            fontFamily: StringConstants.fontFamily,
-          ),
-          border: InputBorder.none,
-        ),
-      ),
-    );
-  }
-} */ 
-
 class CustomSearchBar extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
@@ -89,4 +57,3 @@ class CustomSearchBar extends StatelessWidget {
     );
   }
 }
-

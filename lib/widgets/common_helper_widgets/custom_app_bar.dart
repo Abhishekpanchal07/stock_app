@@ -1,7 +1,7 @@
 import 'package:beyond_stock_app/core/constants/color_constants.dart';
 import 'package:beyond_stock_app/core/constants/svg_image_constants.dart';
+import 'package:beyond_stock_app/widgets/common_helper_widgets/svg_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -37,20 +37,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: Visibility(
                 visible: showLeadingIcon ?? true,
                 child: Container(
-                  height: 48,
-                  width: 48,
-                  padding: const EdgeInsets.all(12), // centers the icon (24x24)
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1F1F1F), // Adjust as per your design
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: SvgPicture.asset(
-                    SvgImageConstants.backIcon,
-                    height: 24,
-                    width: 24,
-                    color: Colors.white,
-                  ),
-                ),
+                    height: 48,
+                    width: 48,
+                    padding:
+                        const EdgeInsets.all(12), // centers the icon (24x24)
+                    decoration: BoxDecoration(
+                      color:
+                          const Color(0xFF1F1F1F), // Adjust as per your design
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: SvgImage(
+                      imagePath: SvgImageConstants.backIcon,
+                      height: 24,
+                      width: 24,
+                      colorFilter: ColorFilter.mode(
+                          ColorConstants.whiteColor, BlendMode.srcIn),
+                    )),
               ),
             ),
             const SizedBox(width: 16),

@@ -28,6 +28,7 @@ class TimeSeriesApiService {
     try {
       final response = await apiService.makeApiRequest(
         method: ApiRequestEmun.get.name,
+        showInternetConnectionMessage:true,
         endpoint: ApiEndPointConstants.timeSeriesEndPoint,
         queryParameters: {
           "symbol": stockSymbol,
@@ -68,6 +69,7 @@ class TimeSeriesApiService {
     try {
       final response = await apiService.makeApiRequest(
         method: ApiRequestEmun.get.name,
+        showInternetConnectionMessage:true,
         endpoint: ApiEndPointConstants.timeSeriesEndPoint,
         queryParameters: {
           "symbol": "SPY",

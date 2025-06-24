@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:beyond_stock_app/core/constants/string_constants.dart';
 import 'package:beyond_stock_app/modals/search_result_model.dart';
 import 'package:beyond_stock_app/services/hive/hive_box_names.dart';
 import 'package:beyond_stock_app/services/hive/hive_manager.dart';
@@ -19,15 +20,15 @@ class WatchlistHiveService {
     await box.put(model.symbol, model); // ✅ STORE or UPDATE
 
     return alreadyExists
-        ? 'Stock updated in your watchlist.'
-        : 'Stock added to your watchlist.';
+        ? StringConstants.stockUpdatedText
+        : StringConstants.stockAddedText;
   }
 
   Future<void> removeFromWatchlist(String symbol) async {
     final box =
         await _hiveManager.getBox<SearchResultModel>(HiveBoxNames.watchlistBox);
     if (box.containsKey(symbol)) {
-      await box.delete(symbol); 
+      await box.delete(symbol);
       log("Stock with symbol '$symbol' removed from watchlist.");
     } else {
       log("No stock found with symbol '$symbol' in the watchlist.");

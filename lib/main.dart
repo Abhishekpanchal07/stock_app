@@ -5,6 +5,7 @@ import 'package:beyond_stock_app/core/di/di_setup.dart';
 import 'package:beyond_stock_app/routes/my_routes.dart';
 import 'package:beyond_stock_app/services/hive/hive_manager.dart';
 import 'package:beyond_stock_app/services/hive/register_hiveadapter.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,10 @@ class MyApp extends StatelessWidget {
         title: StringConstants.appName,
         theme: AppTheme.darkTheme,
         routerConfig: router,
+         builder: BotToastInit(), // ✅ This is correct
+        // ⬆️ This works because BotToastInit() returns a valid TransitionBuilder
+        // It's a function: (BuildContext context, Widget? child) => Widget
+       
       ),
     );
   }

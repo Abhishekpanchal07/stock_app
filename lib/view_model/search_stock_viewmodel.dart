@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:beyond_stock_app/modals/search_result_model.dart';
 import 'package:beyond_stock_app/repository/search_stock_api_service.dart';
 import 'package:beyond_stock_app/services/hive/watchlist_hive_service.dart';
+import 'package:beyond_stock_app/widgets/common_helper_widgets/internet_checker.dart';
+import 'package:beyond_stock_app/widgets/common_helper_widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 
 class SearchStockViewmodel extends ChangeNotifier {
@@ -63,7 +65,7 @@ String get searchText => _searchText;
     await loadWatchlist();
   }
 
-  void onSearchTextChanged(String query) { 
+  /* void onSearchTextChanged(String query) { 
     _searchText = query;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
@@ -78,7 +80,33 @@ String get searchText => _searchText;
       }
     }); 
     notifyListeners();
-  }
+  } */ 
+
+ void onSearchTextChanged(String query) {
+  _searchText = query;
+  notifyListeners(); // This makes sure UI (like close icon) updates immediately
+
+  _debounce?.cancel();
+
+  _debounce = Timer(const Duration(milliseconds: 500), () async {
+    if (query.isNotEmpty) {
+      final isConnected = await isNetworkAvailable(); // check inside debounce
+
+      if (!isConnected) {
+        showOfflineMessage(); // show toast/snackbar
+        return;
+      }
+
+      _hasSearched = true;
+      await searchStock(query: query);
+    } else {
+      _hasSearched = false;
+      searchResultList.clear();
+      notifyListeners();
+    }
+  });
+}
+
 
   Future<void> searchStock({required String query}) async {
     _showProgressLoader = true;

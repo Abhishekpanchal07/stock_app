@@ -7,6 +7,7 @@ import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_bottom_she
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_button.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_loader.dart';
 import 'package:beyond_stock_app/widgets/common_helper_widgets/custom_search_bar.dart';
+import 'package:beyond_stock_app/widgets/common_helper_widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -141,10 +142,12 @@ class _AddStockState extends State<AddStock> {
         text: StringConstants.addToWatchList,
         onPressed: () async {
           final viewModel = context.read<SearchStockViewmodel>();
-          await viewModel.addToWatchlist(stock ?? SearchResultModel());
+          final msg =
+              await viewModel.addToWatchlist(stock ?? SearchResultModel());
           if (context.mounted) {
             Navigator.pop(context);
-
+            showInformativeMessage(
+                message: msg, backgroundColor: ColorConstants.emeraldGreen);
             viewModel.clearSearch(); // clears list & viewmodel text
             _searchController.clear(); // clears UI text
           }

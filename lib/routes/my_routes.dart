@@ -6,12 +6,16 @@ import 'package:beyond_stock_app/screens/main_scaffold/main_scaffold.dart';
 import 'package:beyond_stock_app/screens/note/note_screen.dart';
 import 'package:beyond_stock_app/screens/stock_detail/stock_detail_screen.dart';
 import 'package:beyond_stock_app/screens/watchlist/screens/watchlist.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:go_router/go_router.dart';
 
 class MyRoutes {
   static Future<GoRouter> initializeRouter() async {
     return GoRouter(
         initialLocation: RouteConstants.mainScaffoldScreen,
+        observers: [
+          BotToastNavigatorObserver()
+        ], // ✅ Add this here
         routes: [
           GoRoute(
             path: RouteConstants.mainScaffoldScreen,
