@@ -33,11 +33,15 @@ class PerformanceInEventsChart extends StatelessWidget {
             builder: (context, viewModel, _) {
               // Get dynamic data similar to yearly returns
               final stockReturns = viewModel.getEventPerformanceStockReturns();
-              final benchmarkReturns = viewModel.getEventPerformanceBenchmarkReturns();
-              
-              final events = viewModel.eventLabels; // e.g., ['2008 Crisis', 'COVID-19', 'Financial Crisis']
+              final benchmarkReturns =
+                  viewModel.getEventPerformanceBenchmarkReturns();
 
-              if (events.isEmpty || stockReturns.isEmpty || benchmarkReturns.isEmpty) {
+              final events = viewModel
+                  .eventLabels; // e.g., ['2008 Crisis', 'COVID-19', 'Financial Crisis']
+
+              if (events.isEmpty ||
+                  stockReturns.isEmpty ||
+                  benchmarkReturns.isEmpty) {
                 return const SizedBox(
                   height: 300,
                   child: Center(
@@ -70,18 +74,25 @@ class PerformanceInEventsChart extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Container(
-                    height: 260,
+                    height: 364,
+                    decoration: BoxDecoration(
+                        color: ColorConstants.scaffoldBgColor,
+                        borderRadius: BorderRadius.circular(10)),
                     margin: const EdgeInsets.only(left: 20, right: 25, top: 24),
+                    padding: const EdgeInsets.all(
+                        20), // Added padding
                     child: BarChart(
                       BarChartData(
+                        alignment: BarChartAlignment
+                            .spaceAround, // Better space distribution
+                        groupsSpace: 24, // Increased space between groups
                         barTouchData: BarTouchData(
                           enabled: true,
                           touchTooltipData: BarTouchTooltipData(
                             getTooltipItem: (group, groupIndex, rod, rodIndex) {
                               final value = rod.toY.toStringAsFixed(2);
-                              final label = rodIndex == 0 ? 'Stock: ₹$value' : 'Benchmark: ₹$value';
                               return BarTooltipItem(
-                                label,
+                                '₹$value',
                                 TextStyle(
                                   color: rod.color ?? Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -97,18 +108,17 @@ class PerformanceInEventsChart extends StatelessWidget {
                           final event = entry.value;
                           return BarChartGroupData(
                             x: index,
-                            barsSpace: 8, // Increased space between bar groups
                             barRods: [
                               BarChartRodData(
                                 toY: stockReturns[event] ?? 0,
                                 color: ColorConstants.addButtonColor,
-                                width: 16, // Increased bar width from 8 to 16
+                                width: 22, // Increased bar width
                                 borderRadius: BorderRadius.zero,
                               ),
                               BarChartRodData(
                                 toY: benchmarkReturns[event] ?? 0,
                                 color: ColorConstants.greyText,
-                                width: 16, // Increased bar width from 8 to 16
+                                width: 22, // Increased bar width
                                 borderRadius: BorderRadius.zero,
                               ),
                             ],
@@ -117,46 +127,51 @@ class PerformanceInEventsChart extends StatelessWidget {
                         titlesData: FlTitlesData(
                           bottomTitles: AxisTitles(
                             sideTitles: SideTitles(
-                              reservedSize: 40,
+                              reservedSize: 42, // Increased reserved space
                               showTitles: true,
                               getTitlesWidget: (value, _) {
                                 int index = value.toInt();
                                 if (index >= 0 && index < events.length) {
                                   final event = events[index];
                                   final stock = stockReturns[event] ?? 0;
-                                  final benchmark = benchmarkReturns[event] ?? 0;
+                                  final benchmark =
+                                      benchmarkReturns[event] ?? 0;
 
                                   Color? indicatorColor;
                                   if (stock > benchmark) {
-                                    indicatorColor = ColorConstants.addButtonColor;
+                                    indicatorColor =
+                                        ColorConstants.addButtonColor;
                                   } else if (benchmark > stock) {
                                     indicatorColor = ColorConstants.greyText;
                                   }
 
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        event,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          event,
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Container(
-                                        width: 12,
-                                        height: 3,
-                                        decoration: BoxDecoration(
-                                          color: indicatorColor,
-                                          borderRadius: BorderRadius.circular(1),
+                                        const SizedBox(height: 4),
+                                        Container(
+                                          width: 12,
+                                          height: 3,
+                                          decoration: BoxDecoration(
+                                            color: indicatorColor,
+                                            borderRadius:
+                                                BorderRadius.circular(1),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   );
-                                } else {
-                                  return const SizedBox.shrink();
                                 }
+                                return const SizedBox.shrink();
                               },
                             ),
                           ),
@@ -166,21 +181,23 @@ class PerformanceInEventsChart extends StatelessWidget {
                               reservedSize: 50,
                               showTitles: true,
                               getTitlesWidget: (value, _) {
-                                return Text(
-                                  '₹${(value ~/ 1000)}k',
-                                  style: const TextStyle(color: Colors.grey),
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    '₹${(value ~/ 1000)}k',
+                                    style: const TextStyle(
+                                        color: Colors.grey, fontSize: 10),
+                                  ),
                                 );
                               },
                             ),
                           ),
                           rightTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false)),
+                              sideTitles: SideTitles(showTitles: false)),
                           topTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false)),
+                              sideTitles: SideTitles(showTitles: false)),
                         ),
-                        gridData: FlGridData(
-                          show: false,
-                        ),
+                        gridData: FlGridData(show: false),
                         borderData: FlBorderData(show: false),
                       ),
                     ),
@@ -190,14 +207,11 @@ class PerformanceInEventsChart extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       LegendItem(
-                        color: ColorConstants.addButtonColor, 
-                        text: "Short-Term Trend Catcher"
-                      ),
+                          color: ColorConstants.addButtonColor,
+                          text: "Short-Term Trend Catcher"),
                       SizedBox(width: 16),
                       LegendItem(
-                        color: ColorConstants.greyText, 
-                        text: "Benchmark"
-                      ),
+                          color: ColorConstants.greyText, text: "Benchmark"),
                     ],
                   ),
                 ],
