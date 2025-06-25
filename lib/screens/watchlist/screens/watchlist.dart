@@ -50,9 +50,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     return FloatingActionButton(
       backgroundColor: ColorConstants.addButtonColor,
       shape: CircleBorder(),
-      onPressed: () {
-        context.pushNamed(RouteConstants.addStockScreen);
-      },
+      onPressed: () => context.pushNamed(RouteConstants.addStockScreen),
+      
       child: const Icon(Icons.add, color: ColorConstants.blackColor),
     );
   }

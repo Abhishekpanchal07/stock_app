@@ -31,14 +31,14 @@ class CustomSearchBar extends StatelessWidget {
             child: TextField(
               controller: controller,
               cursorColor: ColorConstants.searchStockColor,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: ColorConstants.whiteColor),
               onChanged: onChanged,
               decoration: InputDecoration(
                 hintText: StringConstants.searchStock,
-                hintStyle: TextStyle(
+                hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorConstants.searchStockColor,
                   fontSize: 14,
-                  fontFamily: StringConstants.fontFamily,
+                  
                 ),
                 border: InputBorder.none,
               ),

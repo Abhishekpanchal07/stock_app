@@ -1,6 +1,7 @@
 
 class StringConstants {
   static const appName = "Stock App";
+  static const unknownStock = 'unknown Stock';
   static const watchList1 = "watchList 1";
   static const noteScreen = "Note Screen";
   static const ideaScreen = "Idea Screen";
@@ -21,7 +22,7 @@ class StringConstants {
   static const youAreOfflinePleaseConnect =
       "You are offine, please connect with internet";
       static const backOnlineMessage =
-      "Back Online !";
+      "You're back online";
   static const  livePerformance =  "Live Performance vs.";
   static const  calenderYearlyPerformance =  "Calendar Year Returns";
   static const  equityLargeCap =  "Equity Large Cap";
@@ -49,6 +50,8 @@ class StringConstants {
       "An unexpected error occurred"; 
       static const shortTermCatcher = "Short Term Trend Catcher";
       static const benchmark = "Benchmark";
+      static const stockNameNotFound = "Stock Name Not Found";
+      static const performanceInEvents = 'Performance in Events';
   static const followingStockAddedText =
       'Following stock will be added to the watchlist.';
   static const apiSecretKey = "5d71c57bc47541ba980571bf2ab717bf";

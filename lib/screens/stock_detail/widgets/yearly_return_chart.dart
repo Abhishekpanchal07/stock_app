@@ -64,7 +64,7 @@ class YearlyReturnsChart extends StatelessWidget {
                   children: [
                     _buildTitle(context),
                     _buildChart(stockReturns, benchmarkReturns, years,
-                        yearIndexMap, chartMetrics),
+                        yearIndexMap, chartMetrics,context),
                     const SizedBox(height: 16),
                     _buildLegend(),
                   ],
@@ -95,7 +95,8 @@ class YearlyReturnsChart extends StatelessWidget {
     Map<int, double> benchmarkReturns,
     List<int> years,
     Map<int, int> yearIndexMap,
-    _ChartMetrics metrics,
+    _ChartMetrics metrics, 
+    BuildContext context
   ) {
     return Container(
       height: 260,
@@ -172,7 +173,7 @@ class YearlyReturnsChart extends StatelessWidget {
                         Text(
                           year.toString(),
                           style:
-                              const TextStyle(color: Colors.grey, fontSize: 12),
+                              Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.greyText, fontSize: 12),
                         ),
                         const SizedBox(height: 4),
                         Container(
@@ -198,7 +199,7 @@ class YearlyReturnsChart extends StatelessWidget {
                 showTitles: true,
                 getTitlesWidget: (value, _) {
                   return Text('₹${(value ~/ 1000)}k',
-                      style: const TextStyle(color: Colors.grey));
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.greyText));
                 },
               ),
             ),
@@ -238,9 +239,9 @@ class YearlyReturnsChart extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
         LegendItem(
-            color: Colors.cyanAccent, text: StringConstants.shortTermCatcher),
+            color: ColorConstants.addButtonColor, text: StringConstants.shortTermCatcher),
         SizedBox(width: 16),
-        LegendItem(color: Colors.grey, text: StringConstants.benchmark),
+        LegendItem(color: ColorConstants.greyText, text: StringConstants.benchmark),
       ],
     );
   }
@@ -290,7 +291,7 @@ class LegendItem extends StatelessWidget {
       children: [
         Container(width: 12, height: 12, color: color),
         const SizedBox(width: 6),
-        Text(text, style: const TextStyle(fontSize: 12)),
+        Text(text, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12)),
       ],
     );
   }

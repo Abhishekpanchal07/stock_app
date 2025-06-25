@@ -61,15 +61,14 @@ class PerformanceInEventsChart extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.only(left: 20, top: 24),
                     child: Text(
-                      'Performance in Events',
-                      style: TextStyle(
-                        fontSize: 16,
+                      StringConstants.performanceInEvents,
+                      style:  Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,
                         fontWeight: FontWeight.w300,
-                        color: Colors.white,
-                      ),
+                        color: Colors.white,),
+                      
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -152,8 +151,8 @@ class PerformanceInEventsChart extends StatelessWidget {
                                       children: [
                                         Text(
                                           event,
-                                          style: const TextStyle(
-                                            color: Colors.grey,
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: ColorConstants.greyText,
                                             fontSize: 12,
                                           ),
                                         ),
@@ -185,8 +184,8 @@ class PerformanceInEventsChart extends StatelessWidget {
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
                                     '₹${(value ~/ 1000)}k',
-                                    style: const TextStyle(
-                                        color: Colors.grey, fontSize: 10),
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: ColorConstants.greyText, fontSize: 10),
                                   ),
                                 );
                               },
@@ -208,10 +207,10 @@ class PerformanceInEventsChart extends StatelessWidget {
                     children: const [
                       LegendItem(
                           color: ColorConstants.addButtonColor,
-                          text: "Short-Term Trend Catcher"),
+                          text: StringConstants.shortTermCatcher),
                       SizedBox(width: 16),
                       LegendItem(
-                          color: ColorConstants.greyText, text: "Benchmark"),
+                          color: ColorConstants.greyText, text: StringConstants.benchmark),
                     ],
                   ),
                 ],

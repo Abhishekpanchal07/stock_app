@@ -1,3 +1,4 @@
+import 'package:beyond_stock_app/services/hive/register_hiveadapter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveManager {
@@ -8,8 +9,9 @@ class HiveManager {
 
   final Map<String, Box> _openBoxes = {};
 
-  Future<void> initHive() async {
-    await Hive.initFlutter();
+  Future<void> initializeHive() async {
+    await Hive.initFlutter(); 
+   await registerAdapters();
   }
 
  

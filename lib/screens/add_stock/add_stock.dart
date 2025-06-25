@@ -80,7 +80,7 @@ class _AddStockState extends State<AddStock> {
                               vm.hasSearched
                                   ? StringConstants.noMatchingResultFound
                                   : StringConstants.searchAndAddStocks,
-                              style: const TextStyle(color: Colors.white),
+                              style: Theme.of(context).textTheme.bodySmall,
                               textAlign: TextAlign.center,
                             ),
                           );
@@ -101,7 +101,7 @@ class _AddStockState extends State<AddStock> {
                                     const EdgeInsets.symmetric(vertical: 12.0),
                                 child: Text(
                                   item.name ?? '',
-                                  style: const TextStyle(
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: ColorConstants.whiteColor,
                                     fontSize: 16,
                                     overflow: TextOverflow.ellipsis,
@@ -137,7 +137,7 @@ class _AddStockState extends State<AddStock> {
       context: context,
       title: StringConstants.addToWatchList,
       description: StringConstants.followingStockAddedText,
-      content: stock?.name ?? 'Unknown Stock',
+      content: stock?.name ?? StringConstants.unknownStock,
       istButton: CustomButton(
         text: StringConstants.addToWatchList,
         onPressed: () async {

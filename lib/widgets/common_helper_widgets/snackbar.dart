@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:beyond_stock_app/core/constants/color_constants.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
 
- showInformativeMessage({
+showInformativeMessage({
   required String message,
   Color backgroundColor = ColorConstants.crimsonRed,
   Color textColor = ColorConstants.whiteColor,
@@ -18,7 +18,8 @@ import 'package:beyond_stock_app/core/constants/string_constants.dart';
     toastBuilder: (_) => Align(
       alignment: Alignment.topCenter,
       child: Container(
-        margin: const EdgeInsets.only(top: 60, left: 16, right: 16),
+        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: backgroundColor,
@@ -26,27 +27,30 @@ import 'package:beyond_stock_app/core/constants/string_constants.dart';
         ),
         child: Text(
           message,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: textColor,
-            fontSize: 14,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
             fontFamily: StringConstants.fontFamily,
           ),
         ),
       ),
     ),
   );
-} 
+}
 
 void showOfflineMessage() {
   showInformativeMessage(
-      message: StringConstants.youAreOfflinePleaseConnect,
-      fontSize: 12.0,
-      );
-} 
+    message: StringConstants.youAreOfflinePleaseConnect,
+    fontSize: 12.0,
+  );
+}
+
 void showBackOnlineMessage() {
   showInformativeMessage(
-      message: StringConstants.backOnlineMessage,
-      fontSize: 12.0,
-      backgroundColor: ColorConstants.emeraldGreen
-      );
+    message: StringConstants.backOnlineMessage, // Inspired by YouTube
+    fontSize: 12.0,
+    backgroundColor: ColorConstants.emeraldGreen,
+  );
 }

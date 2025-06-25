@@ -1,4 +1,4 @@
-// stock_tile.dart
+
 import 'package:beyond_stock_app/core/constants/parameter_key_constants.dart';
 import 'package:beyond_stock_app/core/constants/route_constants.dart';
 import 'package:beyond_stock_app/core/constants/string_constants.dart';
@@ -72,12 +72,10 @@ class _StockListViewState extends State<StockListView> {
 
   Widget _buildStockTile(BuildContext context, SearchResultModel stock) {
     return GestureDetector(
-      onTap: () {
-        context.pushNamed(RouteConstants.stockDetailScreen, extra: {
-          ParameterKeyConstants.stockName: stock.name,
-          ParameterKeyConstants.stockSymbol: stock.symbol
-        });
-      },
+      onTap: () => context.pushNamed(RouteConstants.stockDetailScreen, extra: {
+        ParameterKeyConstants.stockName: stock.name,
+        ParameterKeyConstants.stockSymbol: stock.symbol
+      }),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(0),
         clipBehavior: Clip.hardEdge,
@@ -97,7 +95,6 @@ class _StockListViewState extends State<StockListView> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: ColorConstants.blackColor,
-                    // shape: BoxShape.circle,
                   ),
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -118,12 +115,11 @@ class _StockListViewState extends State<StockListView> {
               children: [
                 Expanded(
                   child: Text(
-                    stock.name ?? "Stock Name Not Found",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      height: 1.4,
-                    ),
+                    stock.name ?? StringConstants.stockNameNotFound,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: ColorConstants.whiteColor,
+                        height: 1.4,
+                        fontSize: 14),
                   ),
                 ),
                 Column(
@@ -131,20 +127,16 @@ class _StockListViewState extends State<StockListView> {
                   children: [
                     Text(
                       convertUsdToInr(stock.close),
-                      style: TextStyle(
-                        color: _getPriceColor(stock.close),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: _getPriceColor(stock.close),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      "(${formatPercent(stock.percentChange)})",
-                      style: TextStyle(
-                        color: _getPercentColor(stock.percentChange),
-                        fontSize: 12,
-                      ),
-                    ),
+                    Text("(${formatPercent(stock.percentChange)})",
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: _getPercentColor(stock.percentChange),
+                            fontSize: 12)),
                   ],
                 ),
               ],
@@ -157,12 +149,14 @@ class _StockListViewState extends State<StockListView> {
 
   Color _getPriceColor(String? percentChangeStr) {
     final percent = double.tryParse(percentChangeStr ?? '0.0') ?? 0.0;
-    return percent >= 0 ? Colors.green : Colors.red;
+    return percent >= 0
+        ? ColorConstants.emeraldGreen
+        : ColorConstants.crimsonRed;
   }
 
   Color _getPercentColor(String? percentChangeStr) {
     final percent = double.tryParse(percentChangeStr ?? '0.0') ?? 0.0;
-    return percent >= 0 ? ColorConstants.greyText : Colors.red;
+    return percent >= 0 ? ColorConstants.greyText : ColorConstants.crimsonRed;
   }
 
   String convertUsdToInr(String? usdValue, {bool addSymbol = true}) {
@@ -192,7 +186,7 @@ class _StockListViewState extends State<StockListView> {
       context: context,
       title: StringConstants.deleteFromwatchList,
       description: StringConstants.followingStockDeleteText,
-      content: stock?.name ?? 'Unknown Stock',
+      content: stock?.name ?? StringConstants.unknownStock,
       istButton: CustomButton(
         text: StringConstants.deleteStock,
         onPressed: () async {
@@ -202,15 +196,11 @@ class _StockListViewState extends State<StockListView> {
             await viewModel.removeFromWatchlist(stock?.symbol ?? "");
           }
           if (context.mounted) {
-            Navigator.pop(context); // Close bottom sheet
+            context.pop();
             showInformativeMessage(
                 message: StringConstants.stockRemovedText,
                 backgroundColor: ColorConstants.emeraldGreen);
-          } else {}
-
-          /*   ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Stock removed from your watchlist.")),
-          ); */
+          }
         },
         buttonColor: ColorConstants.blackColor,
         textColor: ColorConstants.deleteStockColor,

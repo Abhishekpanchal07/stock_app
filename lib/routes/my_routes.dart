@@ -10,8 +10,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:go_router/go_router.dart';
 
 class MyRoutes {
-  static Future<GoRouter> initializeRouter() async {
-    return GoRouter(
+    static final GoRouter router = GoRouter(
         initialLocation: RouteConstants.mainScaffoldScreen,
         observers: [
           BotToastNavigatorObserver()
@@ -66,4 +65,4 @@ class MyRoutes {
           )
         ]);
   }
-}
+

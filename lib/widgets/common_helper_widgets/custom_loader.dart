@@ -22,11 +22,9 @@ class CustomLoader extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             message,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: textColor,
+                ),
           ),
         ],
       ),

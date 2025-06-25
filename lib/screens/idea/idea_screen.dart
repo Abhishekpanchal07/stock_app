@@ -8,8 +8,7 @@ class IdeaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
-      
+    return Scaffold(
         backgroundColor: ColorConstants.blackColor,
         appBar: CustomAppBar(
           backgroundColor: ColorConstants.blackColor,
@@ -18,11 +17,12 @@ class IdeaScreen extends StatelessWidget {
           showLeadingIcon: false,
           fontWeight: FontWeight.w600,
         ),
-        body: const Center(
+        body: Center(
           child: Text(
             StringConstants.ideaScreen,
-            style:
-                TextStyle(fontSize: 18, fontFamily: StringConstants.fontFamily),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontSize: 18,
+                ),
           ),
         ));
   }

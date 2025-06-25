@@ -17,10 +17,10 @@ class NoteScreen extends StatelessWidget {
         showLeadingIcon: false,
         fontWeight: FontWeight.w600,
       ),
-      body: const Center(
+      body:  Center(
         child: Text(
           StringConstants.noteScreen,
-          style: TextStyle(fontSize: 18,fontFamily: StringConstants.fontFamily),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 18,),
         ),
       ),
     );
